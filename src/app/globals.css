@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.CodeMirror {
+    font-size: 14px;
+    height: 85vh !important;
+}
+
+.CodeMirror-gutters {
+    border-right: 1px solid #e5e7eb;
+}
+
+.CodeMirror-linenumber {
+    color: #6b7280;
+}
