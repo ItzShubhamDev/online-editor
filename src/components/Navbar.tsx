@@ -3,6 +3,7 @@
 import modes from "@/utils/modes";
 import themes from "@/utils/themes";
 import dynamic from "next/dynamic";
+import { useEffect } from "react";
 
 const ThemeToggle = dynamic(() => import("./ThemeToggle"), {
     ssr: false,
@@ -21,6 +22,27 @@ const Navbar = ({
     setMime: React.Dispatch<React.SetStateAction<string>> | null;
     children?: React.ReactNode;
 }) => {
+    useEffect(() => {
+        const theme = localStorage.getItem("codeMirrorTheme");
+        if (theme) {
+            setTheme(theme);
+        }
+        const mime = localStorage.getItem("codeMirrorMime");
+        if (mime && setMime) {
+            setMime(mime);
+        }
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem("codeMirrorTheme", theme);
+    }, [theme]);
+
+    useEffect(() => {
+        if (setMime) {
+            localStorage.setItem("codeMirrorMime", mime);
+        }
+    }, [mime]);
+
     return (
         <div className="flex flex-col sm:flex-row items-center justify-between mb-5">
             <div className="flex items-center">
