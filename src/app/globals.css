@@ -4,13 +4,18 @@
 
 .CodeMirror {
     font-size: 14px;
-    height: 85vh !important;
+    border-radius: 0.5rem;
+    height: 80vh !important;
+    border-width: 2px;
+    border-color: rgb(209, 213, 219);
+}
+
+@media (prefers-color-scheme: dark) {
+    .CodeMirror {
+        border-color: rgb(55, 65, 81);
+    }
 }
 
 .CodeMirror-gutters {
     border-right: 1px solid #e5e7eb;
-}
-
-.CodeMirror-linenumber {
-    color: #6b7280;
 }

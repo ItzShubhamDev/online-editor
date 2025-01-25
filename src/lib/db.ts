@@ -13,15 +13,21 @@ const getConnection = async () => {
         return conn;
     } else {
         if (!globalForMysql.mysql) {
+            const { DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME } =
+                process.env;
+            if (!DB_HOST || !DB_PORT || !DB_USER || !DB_PASSWORD || !DB_NAME) {
+                throw new Error("Missing database environment variables");
+            }
             globalForMysql.mysql = await mysql.createConnection({
-                host: "localhost",
-                user: "editor",
-                password: "editor",
-                database: "codes",
+                host: DB_HOST,
+                port: parseInt(DB_PORT),
+                user: DB_USER,
+                password: DB_PASSWORD,
+                database: DB_NAME,
             });
         }
         await globalForMysql.mysql.query(
-            "CREATE TABLE IF NOT EXISTS codes (id VARCHAR(36) PRIMARY KEY, code TEXT)"
+            "CREATE TABLE IF NOT EXISTS codes (id VARCHAR(36) PRIMARY KEY, code TEXT, mime TEXT, readOnly BOOLEAN)"
         );
         return globalForMysql.mysql;
     }

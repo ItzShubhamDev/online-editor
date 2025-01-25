@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from "react";
 import CodeMirror from "codemirror";
 
 import "codemirror/lib/codemirror.css";
-import "codemirror/theme/material.css";
+
 import "codemirror/theme/3024-day.css";
 import "codemirror/theme/3024-night.css";
 import "codemirror/theme/abcdef.css";
@@ -101,6 +101,12 @@ import "codemirror/addon/fold/foldcode";
 import "codemirror/addon/fold/foldgutter";
 import "codemirror/addon/fold/brace-fold";
 import "codemirror/addon/fold/foldgutter.css";
+import "codemirror/addon/search/search";
+import "codemirror/addon/search/searchcursor";
+import "codemirror/addon/search/jump-to-line";
+import "codemirror/addon/dialog/dialog";
+import "codemirror/addon/dialog/dialog.css";
+
 import modes from "@/utils/modes";
 
 export interface CodeEditorProps {
@@ -108,9 +114,16 @@ export interface CodeEditorProps {
     theme: string;
     value: string;
     onChange: (value: string) => void;
+    options?: CodeMirror.EditorConfiguration;
 }
 
-const CodeEditor = ({ mime, theme, value, onChange }: CodeEditorProps) => {
+const CodeEditor = ({
+    mime,
+    theme,
+    value,
+    onChange,
+    options,
+}: CodeEditorProps) => {
     const editorRef = useRef<HTMLDivElement>(null);
     const cmInstanceRef = useRef<CodeMirror.Editor | null>(null);
 
@@ -131,6 +144,7 @@ const CodeEditor = ({ mime, theme, value, onChange }: CodeEditorProps) => {
                 lineWrapping: true,
                 tabSize: 2,
                 indentWithTabs: false,
+                ...options,
             });
 
             cmInstanceRef.current.on("change", (instance) => {
@@ -147,6 +161,12 @@ const CodeEditor = ({ mime, theme, value, onChange }: CodeEditorProps) => {
             cmInstanceRef.current.setOption("mode", mode?.mode);
         }
     }, [mime]);
+
+    useEffect(() => {
+        if (cmInstanceRef.current) {
+            cmInstanceRef.current.setOption("theme", theme);
+        }
+    }, [theme]);
 
     return <div ref={editorRef} className="hover:cursor-text" />;
 };
