@@ -2,14 +2,14 @@ import { connection } from "@/lib/db";
 import { RowDataPacket } from "mysql2";
 import { NextRequest, NextResponse } from "next/server";
 
+type Params = Promise<{ id: string }>;
+
 export const GET = async (
     req: NextRequest,
     {
         params,
     }: {
-        params: Promise<{
-            id: string;
-        }>;
+        params: Params;
     }
 ) => {
     const db = await connection;
@@ -29,9 +29,7 @@ export const PATCH = async (
     {
         params,
     }: {
-        params: Promise<{
-            id: string;
-        }>;
+        params: Params;
     }
 ) => {
     const db = await connection;
