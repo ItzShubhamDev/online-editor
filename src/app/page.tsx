@@ -14,7 +14,7 @@ const CodeEditor = dynamic(() => import("../components/CodeEditor"), {
 
 export default function Home() {
     const [value, setValue] = useState<string>("");
-    const [mime, setMime] = useState("text/javascript");
+    const [mime, setMime] = useState("text/plain");
     const [theme, setTheme] = useState("material");
     const [readOnly, setReadOnly] = useState(0);
     const [error, setError] = useState<string | null>(null);
@@ -58,42 +58,30 @@ export default function Home() {
     return (
         <div className="w-full h-screen">
             <div className="bg-white dark:bg-gray-900 p-4">
-                <Navbar theme={theme} setTheme={setTheme}>
-                    <div className="flex items-center">
-                        <select
-                            value={mime}
-                            onChange={(v) => setMime(v.target.value)}
-                            className="mr-2 p-2 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-700 rounded-md"
-                        >
-                            {modes.map((mode, i) => (
-                                <option
-                                    key={i}
-                                    value={mode.mime}
-                                    className="dark:bg-gray-800"
-                                >
-                                    {mode.name}
-                                </option>
-                            ))}
-                        </select>
-                        <button
-                            onClick={() => {
-                                setReadOnly(1);
-                                share();
-                            }}
-                            className="mr-2 p-2 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-700 focus:outline-none rounded-md"
-                        >
-                            Share ReadOnly
-                        </button>
-                        <button
-                            onClick={() => {
-                                setReadOnly(0);
-                                share();
-                            }}
-                            className="flex items-center p-2 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-700 focus:outline-none rounded-md"
-                        >
-                            Share
-                        </button>
-                    </div>
+                <Navbar
+                    theme={theme}
+                    setTheme={setTheme}
+                    mime={mime}
+                    setMime={setMime}
+                >
+                    <button
+                        onClick={() => {
+                            setReadOnly(1);
+                            share();
+                        }}
+                        className="mr-2 p-2 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-700 focus:outline-none rounded-md"
+                    >
+                        Share ReadOnly
+                    </button>
+                    <button
+                        onClick={() => {
+                            setReadOnly(0);
+                            share();
+                        }}
+                        className="flex items-center p-2 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-700 focus:outline-none rounded-md"
+                    >
+                        Share
+                    </button>
                 </Navbar>
                 {error && <Alert message={error} />}
                 <CodeEditor

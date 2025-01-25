@@ -22,13 +22,14 @@ export default function Page({ params }: { params: Params }) {
         readOnly: 0 | 1;
     }>({
         code: "",
-        mime: "text/javascript",
+        mime: "text/plain",
         readOnly: 0,
     });
     const [theme, setTheme] = useState("material");
     const router = useRouter();
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
+    const [mime, setMime] = useState("text/plain");
     useEffect(() => {
         const fetchData = async () => {
             const res = await fetch(`/api/codes/${resolvedParams.id}`);
@@ -38,6 +39,7 @@ export default function Page({ params }: { params: Params }) {
             }
             const data = await res.json();
             setData(data);
+            setMime(data.mime);
             setLoading(false);
         };
         fetchData();
@@ -49,6 +51,7 @@ export default function Page({ params }: { params: Params }) {
             body: JSON.stringify({
                 code: data.code,
                 mime: data.mime,
+                readOnly: 0,
             }),
         });
         const r = await res.json();
@@ -61,7 +64,12 @@ export default function Page({ params }: { params: Params }) {
 
     return (
         <div className="p-4">
-            <Navbar theme={theme} setTheme={setTheme}>
+            <Navbar
+                theme={theme}
+                setTheme={setTheme}
+                mime={mime}
+                setMime={data.readOnly === 1 ? null : setMime}
+            >
                 <div className="flex items-center">
                     <button
                         onClick={clone}
