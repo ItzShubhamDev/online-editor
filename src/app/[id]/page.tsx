@@ -10,12 +10,16 @@ const CodeEditor = dynamic(() => import("@/components/CodeEditor"), {
     ssr: false,
 });
 
-type Params = { id: string };
-
-export default function Page({ params }: { params: Params }) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const resolvedParams = use<Params>(params);
+export default function Page({
+    params,
+}: {
+    params: Promise<{
+        id: string;
+    }>;
+}) {
+    const resolvedParams = use<{
+        id: string;
+    }>(params);
     const [data, setData] = useState<{
         code: string;
         mime: string;
