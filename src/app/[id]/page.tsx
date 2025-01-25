@@ -62,6 +62,25 @@ export default function Page({ params }: { params: Params }) {
         router.push(`/${r.id}`);
     };
 
+    const save = async () => {
+        if (data.code.length === 0) {
+            setError("Code cannot be empty");
+            return;
+        }
+        const res = await fetch(`/api/codes/${resolvedParams.id}`, {
+            method: "PATCH",
+            body: JSON.stringify({
+                code: data.code,
+                mime: data.mime,
+            }),
+        });
+        const r = await res.json();
+        if (r.error) {
+            setError(r.error);
+            return;
+        }
+    };
+
     return (
         <div className="p-4">
             <Navbar
@@ -85,6 +104,14 @@ export default function Page({ params }: { params: Params }) {
                     >
                         New
                     </button>
+                    {data.readOnly === 0 && (
+                        <button
+                            onClick={save}
+                            className="ml-2 p-2 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-700 focus:outline-none rounded-md"
+                        >
+                            Save
+                        </button>
+                    )}
                 </div>
             </Navbar>
             {data.readOnly === 1 && (
@@ -97,7 +124,7 @@ export default function Page({ params }: { params: Params }) {
                     value={data.code}
                     theme={theme}
                     mime={data.mime}
-                    onChange={() => {}}
+                    onChange={(v) => setData({ ...data, code: v })}
                     options={{
                         readOnly: data.readOnly === 1,
                     }}
