@@ -7,12 +7,11 @@ const ThemeToggle = () => {
     const { theme, setTheme } = useTheme();
 
     return (
-        <button onClick={() => setTheme(theme === "light" ? "dark" : "light")}>
-            {theme === "dark" ? (
-                <Sun className="text-white" />
-            ) : (
-                <Moon className="text-gray-800" />
-            )}
+        <button
+            className="text-gray-500"
+            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+        >
+            {theme === "dark" ? <Sun /> : <Moon />}
         </button>
     );
 };

@@ -86,7 +86,7 @@ export default function Page({
     };
 
     return (
-        <div className="p-4">
+        <div className="bg-white dark:bg-gray-900 p-4 w-full h-screen">
             <Navbar
                 theme={theme}
                 setTheme={setTheme}

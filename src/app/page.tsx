@@ -56,41 +56,39 @@ export default function Home() {
     }, [value]);
 
     return (
-        <div className="w-full h-screen">
-            <div className="bg-white dark:bg-gray-900 p-4">
-                <Navbar
-                    theme={theme}
-                    setTheme={setTheme}
-                    mime={mime}
-                    setMime={setMime}
+        <div className="bg-white dark:bg-gray-900 p-4 w-full h-screen">
+            <Navbar
+                theme={theme}
+                setTheme={setTheme}
+                mime={mime}
+                setMime={setMime}
+            >
+                <button
+                    onClick={() => {
+                        setReadOnly(1);
+                        share();
+                    }}
+                    className="mr-2 p-2 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-700 focus:outline-none rounded-md"
                 >
-                    <button
-                        onClick={() => {
-                            setReadOnly(1);
-                            share();
-                        }}
-                        className="mr-2 p-2 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-700 focus:outline-none rounded-md"
-                    >
-                        Share ReadOnly
-                    </button>
-                    <button
-                        onClick={() => {
-                            setReadOnly(0);
-                            share();
-                        }}
-                        className="flex items-center p-2 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-700 focus:outline-none rounded-md"
-                    >
-                        Share
-                    </button>
-                </Navbar>
-                {error && <Alert message={error} />}
-                <CodeEditor
-                    theme={theme}
-                    mime={mime}
-                    value={value}
-                    onChange={setValue}
-                />
-            </div>
+                    Share ReadOnly
+                </button>
+                <button
+                    onClick={() => {
+                        setReadOnly(0);
+                        share();
+                    }}
+                    className="flex items-center p-2 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-700 focus:outline-none rounded-md"
+                >
+                    Share
+                </button>
+            </Navbar>
+            {error && <Alert message={error} />}
+            <CodeEditor
+                theme={theme}
+                mime={mime}
+                value={value}
+                onChange={setValue}
+            />
         </div>
     );
 }
