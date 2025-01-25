@@ -3,21 +3,21 @@ import mysql from "mysql2/promise";
 const globalForMysql = global as unknown as { mysql: mysql.Connection };
 
 const getConnection = async () => {
+    const { DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME } = process.env;
+    if (!DB_HOST || !DB_PORT || !DB_USER || !DB_PASSWORD || !DB_NAME) {
+        throw new Error("Missing database environment variables");
+    }
     if (process.env.NODE_ENV === "production") {
         const conn = await mysql.createConnection({
-            host: "localhost",
-            user: "editor",
-            password: "editor",
-            database: "codes",
+            host: DB_HOST,
+            port: parseInt(DB_PORT),
+            user: DB_USER,
+            password: DB_PASSWORD,
+            database: DB_NAME,
         });
         return conn;
     } else {
         if (!globalForMysql.mysql) {
-            const { DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME } =
-                process.env;
-            if (!DB_HOST || !DB_PORT || !DB_USER || !DB_PASSWORD || !DB_NAME) {
-                throw new Error("Missing database environment variables");
-            }
             globalForMysql.mysql = await mysql.createConnection({
                 host: DB_HOST,
                 port: parseInt(DB_PORT),
